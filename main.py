@@ -23,7 +23,19 @@ color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 
 running = True
-while running:
-    pass # Здесь будет основной цикл Pygame
+while running: # Здесь будет основной цикл Pygame
+    screen.fill(color) # Закрашиваем экран в рандомный цвет
+    for event in pygame.event.get(): # Проверяем события
+        if event.type == pygame.QUIT: # Если нажата кнопка "Закрыть"
+            running = False # Завершаем цикл
+        if event.type == pygame.MOUSEBUTTONDOWN: # Если нажата кнопка мыши
+            mouse_x, mouse_y = pygame.mouse.get_pos() # Получаем координаты курсора мыши
+            if target_x <= mouse_x <= target_x + target_width and target_y <= mouse_y <= mouse_y + target_height: # Если курсор мыши попал в область цели
+                target_x = random.randint(0, SCREEN_WIDTH - target_width)
+                target_y = random.randint(0, SCREEN_HEIGHT - target_height)
+    screen.blit(target_image, (target_x, target_y)) # Рисуем изображение цели на экране
+    pygame.display.update() # Обновляем экран
+
+
 
 pygame.quit() # Чтобы закрыть Pygame
