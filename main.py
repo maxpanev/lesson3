@@ -18,6 +18,10 @@ target_width, target_height = 80, 80  # Размеры изображения ц
 target_x = random.randint(0, SCREEN_WIDTH - target_width)  # Случайная позиция по X
 target_y = random.randint(0, SCREEN_HEIGHT - target_height)  # Случайная позиция по Y
 
+# Начальная скорость движения мишени
+target_speed_x = 0.14
+target_speed_y = 0.14
+
 color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))  # Случайный цвет фона
 
 # Инициализация переменной счета
@@ -61,7 +65,17 @@ while running:  # Основной цикл Pygame
                 target_y = random.randint(0, SCREEN_HEIGHT - target_height)
                 score += 10  # Увеличиваем счет на 10
 
-        # Отображение текущего счета на экране
+        # Движение мишени
+    target_x += target_speed_x
+    target_y += target_speed_y
+
+    # Проверка на столкновение с границами экрана и изменение направления
+    if target_x <= 0 or target_x >= SCREEN_WIDTH - target_width:
+        target_speed_x = -target_speed_x
+    if target_y <= 0 or target_y >= SCREEN_HEIGHT - target_height:
+        target_speed_y = -target_speed_y
+
+    # Отображение текущего счета на экране
     score_text = font.render("Счет: " + str(score), True, (255, 255, 255))
     screen.blit(score_text, (10, 10))
 
