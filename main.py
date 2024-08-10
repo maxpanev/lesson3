@@ -1,6 +1,8 @@
 import pygame
 import random
 import time
+import requests
+from io import BytesIO
 
 pygame.init() # Инициализация Pygame
 
@@ -15,7 +17,10 @@ pygame.display.set_icon(icon) # Установка иконки
 target_image = pygame.image.load("img/target.png") # Загрузка изображения цели
 target_width, target_height = 80, 80 # Размеры изображения цели
 
-color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) # Случайный цвет фона
+# Загрузка фона из интернета
+background_url = "https://cq.ru/img/f/e/2023/11/08/42648.jpg"  # Укажите URL-адрес вашего изображения
+response = requests.get(background_url)
+background_image = pygame.image.load(BytesIO(response.content))
 
 # Инициализация переменной счета
 score = 0
@@ -42,7 +47,7 @@ targets = create_targets()
 
 running = True
 while running:
-    screen.fill(color)
+    screen.blit(background_image, (0, 0))
     # Проверяем, прошло ли 30 секунд
     elapsed_time = time.time() - start_time
     if elapsed_time > game_duration:
