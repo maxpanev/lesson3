@@ -10,17 +10,28 @@ SCREEN_WIDTH = 800 # Ширина экрана
 SCREEN_HEIGHT = 600 # Высота экрана
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Создание экрана
 
-pygame.display.set_caption("Игра Тир") # Заголовок окна
+pygame.display.set_caption('Игра "Вражеские дроны"') # Заголовок окна
 icon = pygame.image.load("img/42648.jpg") # Загрузка иконки приложения
 pygame.display.set_icon(icon) # Установка иконки
 
-target_image = pygame.image.load("img/target.png") # Загрузка изображения цели
+target_image = pygame.image.load("img/enemy.png") # Загрузка изображения цели
 target_width, target_height = 80, 80 # Размеры изображения цели
 
 # Загрузка фона из интернета
 background_url = "https://cq.ru/img/f/e/2023/11/08/42648.jpg"  # Укажите URL-адрес вашего изображения
 response = requests.get(background_url)
 background_image = pygame.image.load(BytesIO(response.content))
+
+# Загрузка изображения курсора
+cursor_image = pygame.image.load("img/cursor.png")  # Укажите путь к изображению курсора
+cursor_image = pygame.transform.scale(cursor_image, (60, 50))  # Масштабирование изображения курсора
+
+# Преобразование изображения в формат курсора Pygame
+cursor_data = pygame.cursors.Cursor((0, 0), cursor_image)
+
+# Установка собственного курсора
+pygame.mouse.set_visible(False)  # Скрытие стандартного курсора
+pygame.mouse.set_cursor(cursor_data)
 
 # Инициализация переменной счета
 score = 0
@@ -94,6 +105,10 @@ while running:
     remaining_time = max(0, game_duration - int(elapsed_time))
     time_text = font.render("Время: " + str(remaining_time), True, (255, 255, 255))
     screen.blit(time_text, (10, 50))
+
+    # Отображение пользовательского курсора
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    screen.blit(cursor_image, (mouse_x, mouse_y))  # Отображение курсора на позиции мыши
 
     pygame.display.update()
 
